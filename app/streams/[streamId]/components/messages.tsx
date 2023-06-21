@@ -59,11 +59,11 @@ export default function Messages() {
 			<CardHeader className='flex-shrink-0'>
 				<CardTitle>Messages</CardTitle>
 			</CardHeader>
-			<CardContent className='flex-1 space-y-2'>
+			<CardContent className='flex-1'>
 				{messages.length > 0 ? (
 					messages.map((m) => (
 						<p key={m.id}>
-							<span>{m.display_name}: </span>
+							<span className='font-semibold'>{m.display_name}: </span>
 							{m.message}
 						</p>
 					))

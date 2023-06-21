@@ -4,7 +4,7 @@ import dayjs from 'dayjs'
 import Link from 'next/link'
 import { StreamOperations } from './stream-operations'
 
-export function StreamItem({ stream }: { stream: SupaSelectType<'streams'> }) {
+export function StreamItem({ speaker, stream }: { speaker?: boolean; stream: SupaSelectType<'streams'> }) {
 	return (
 		<div className='flex items-center justify-between p-4'>
 			<div className='grid gap-1'>
@@ -15,7 +15,7 @@ export function StreamItem({ stream }: { stream: SupaSelectType<'streams'> }) {
 					<p className='text-sm text-muted-foreground'>{dayjs(stream.date).format('MMMM D, YYYY h:mma')}</p>
 				</div>
 			</div>
-			<StreamOperations stream={stream} />
+			{speaker && <StreamOperations stream={stream} />}
 		</div>
 	)
 }

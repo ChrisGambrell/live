@@ -1,15 +1,15 @@
 'use client'
 
 import { cn } from '@/lib/utils'
-import { Gauge, LayoutDashboard, Settings } from 'lucide-react'
+import { Gauge, LayoutDashboard, Settings, Tv } from 'lucide-react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
 const items = [
 	{
 		href: '/',
-		icon: Gauge,
-		title: 'Dashboard',
+		icon: Tv,
+		title: 'Streams',
 	},
 	{
 		href: '/settings',
