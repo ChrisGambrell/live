@@ -1,5 +1,4 @@
 import { verifyAuth } from '@/lib/supabase-server'
-import { redirect } from 'next/navigation'
 import { Header } from '../components/header'
 import Shell from '../components/shell'
 import SettingsForm from './components/settings-form'
