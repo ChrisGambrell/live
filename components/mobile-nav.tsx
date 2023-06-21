@@ -2,7 +2,7 @@ import { cn } from '@/lib/utils'
 import { Command } from 'lucide-react'
 import Link from 'next/link'
 
-export function MobileNav() {
+export function MobileNav({ title }: { title?: string }) {
 	return (
 		<div
 			className={cn(
@@ -11,7 +11,7 @@ export function MobileNav() {
 			<div className='relative z-20 grid gap-6 p-4 rounded-md shadow-md bg-popover text-popover-foreground'>
 				<Link href='/' className='flex items-center space-x-2'>
 					<Command />
-					<span className='font-bold'>Stepworks Live</span>
+					<span className='font-bold'>{title || 'Stepworks Live'}</span>
 				</Link>
 			</div>
 		</div>

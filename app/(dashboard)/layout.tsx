@@ -1,8 +1,8 @@
 import { verifyAuth } from '@/lib/supabase-server'
 import { ReactNode } from 'react'
+import MainNav from '../../components/main-nav'
+import { UserNav } from '../../components/user-nav'
 import { DashboardNav } from './components/dashboard-nav'
-import MainNav from './components/main-nav'
-import { UserNav } from './components/user-nav'
 
 export default async function DashboardLayout({ children }: { children: ReactNode }) {
 	const user = await verifyAuth()

@@ -38,7 +38,7 @@ export function StreamCreateButton({ className, variant, ...props }: ButtonProps
 		<Dialog>
 			<DialogTrigger className={cn(buttonVariants({ variant }))}>
 				<Plus className='w-4 h-4 mr-2' />
-				New post
+				New stream
 			</DialogTrigger>
 			<DialogContent>
 				<DialogHeader>
