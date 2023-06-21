@@ -1,7 +1,5 @@
 'use client'
 
-// TODO: There needs to be a page for admins to add accounts
-
 import { Button, buttonVariants } from '@/components/ui/button'
 import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
