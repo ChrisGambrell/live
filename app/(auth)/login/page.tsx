@@ -8,7 +8,7 @@ import { Input } from '@/components/ui/input'
 import { H3, Muted } from '@/components/ui/typography'
 import { supaclient } from '@/lib/supabase-client'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 import { toast } from 'react-hot-toast'
 import { z } from 'zod'
@@ -19,11 +19,15 @@ type TForm = z.infer<typeof formSchema>
 export default function LoginPage() {
 	const form = useForm<TForm>({ resolver: zodResolver(formSchema), defaultValues: { email: '', password: '' } })
 	const router = useRouter()
+	const searchParams = useSearchParams()
 
 	async function onSubmit({ email, password }: TForm) {
-		const { error } = await supaclient.auth.signInWithPassword({ email, password })
+		const { error } = await supaclient().auth.signInWithPassword({ email, password })
 		if (error) toast.error(error.message)
-		else router.refresh()
+		else {
+			router.refresh()
+			router.push(searchParams.get('redirectTo') || '/')
+		}
 	}
 
 	return (
