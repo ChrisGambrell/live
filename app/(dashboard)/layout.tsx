@@ -17,7 +17,7 @@ export default async function DashboardLayout({ children }: { children: ReactNod
 			</header>
 			<div className='container grid flex-1 gap-12 md:grid-cols-[200px_1fr]'>
 				<aside className='hidden w-[200px] flex-col md:flex'>
-					<DashboardNav />
+					<DashboardNav speaker={user.role === 'speaker'} />
 				</aside>
 				<main className='flex flex-col flex-1 w-full overflow-hidden'>{children}</main>
 			</div>
