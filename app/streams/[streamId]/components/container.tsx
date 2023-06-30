@@ -9,7 +9,7 @@ import ViewerView from './viewer-view'
 export default function Container({ onMeetingLeave }: { onMeetingLeave: () => void }) {
 	const meeting = useMeeting({
 		onMeetingJoined: () => {
-			if (meetingRef.current.localParticipant.mode === 'CONFERENCE') meetingRef.current.localParticipant.pin()
+			if (meetingRef.current.localParticipant.mode === 'CONFERENCE') meetingRef.current.localParticipant.pin('CAM')
 			setJoined('JOINED')
 		},
 		onMeetingLeft: () => {
