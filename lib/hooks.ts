@@ -17,7 +17,8 @@ export function useRealtime<T extends SupaTables>(
 		async function getInitialData() {
 			const { data, error } = await supabase.from(table).select()
 			if (error || !data) throw error || new Error('Something went wrong getting the initial data')
-			setData(data)
+			// FIXME: any type
+			setData(data as any)
 		}
 
 		getInitialData()
@@ -43,11 +44,13 @@ export function useRealtime<T extends SupaTables>(
 	}, [supabase, table])
 
 	async function create(values: SupaInsertType<T>) {
-		await supabase.from(table).insert(values)
+		// FIXME: any type
+		await supabase.from(table).insert(values as any)
 	}
 
 	async function update(values: SupaUpdateType<T>) {
-		await supabase.from(table).update(values)
+		// FIXME: any type
+		await supabase.from(table).update(values as any)
 	}
 
 	async function remove(id: SupaSelectType<T>['id']) {
