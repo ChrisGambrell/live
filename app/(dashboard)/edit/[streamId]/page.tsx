@@ -18,9 +18,9 @@ export default async function EditStreamPage({ params: { streamId } }: { params:
 			<div className='grid gap-10'>
 				<StreamForm stream={stream} />
 			</div>
-			{/* <div className='grid gap-10'>
+			<div className='grid gap-10'>
 				<StreamUpload stream={stream} />
-			</div> */}
+			</div>
 		</Shell>
 	)
 }
