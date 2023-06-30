@@ -49,9 +49,9 @@ export default function ViewerView() {
 								ref={playerRef}
 								id='hlsPlayer'
 								autoPlay
+								controls
 								style={{ width: '100%', height: '100%' }}
 								playsInline
-								muted
 								onError={(err) => console.error(err, 'hls video error')}
 							/>
 						</div>
