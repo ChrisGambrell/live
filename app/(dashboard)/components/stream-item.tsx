@@ -1,6 +1,14 @@
+import {
+	DropdownMenu,
+	DropdownMenuContent,
+	DropdownMenuItem,
+	DropdownMenuSeparator,
+	DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
 import { Skeleton } from '@/components/ui/skeleton'
 import { SupaSelectType } from '@/lib/supabase'
 import dayjs from 'dayjs'
+import { MoreVertical } from 'lucide-react'
 import Link from 'next/link'
 import { StreamOperations } from './stream-operations'
 
