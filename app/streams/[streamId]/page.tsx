@@ -8,7 +8,6 @@ import Meeting from './components/meeting'
 export default async function StreamPage({ params: { streamId } }: { params: { streamId: string } }) {
 	const user = await verifyAuth()
 	const token = process.env.VIDEOSDK_AUTH_TOKEN!
-	console.log(token)
 
 	const { data: stream, error } = await supaserver(cookies).from('streams').select().eq('id', streamId).single()
 	if (error || !stream) notFound()

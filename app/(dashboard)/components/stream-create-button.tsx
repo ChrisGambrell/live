@@ -6,7 +6,7 @@ import { cn } from '@/lib/utils'
 import { Plus } from 'lucide-react'
 import StreamForm from './stream-form'
 
-export function StreamCreateButton({ className, variant, ...props }: ButtonProps) {
+export function StreamCreateButton({ variant }: ButtonProps) {
 	return (
 		<Dialog>
 			<DialogTrigger className={cn(buttonVariants({ variant }))}>

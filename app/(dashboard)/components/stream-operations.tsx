@@ -38,12 +38,12 @@ export function StreamOperations({ stream }: { stream: SupaSelectType<'streams'>
 					<span className='sr-only'>Open</span>
 				</DropdownMenuTrigger>
 				<DropdownMenuContent align='end'>
-					{/* <DropdownMenuItem>
-						<Link href={`/editor/${stream.id}`} className='flex w-full'>
+					<DropdownMenuItem>
+						<Link href={`/edit/${stream.id}`} className='flex w-full'>
 							Edit
 						</Link>
 					</DropdownMenuItem>
-					<DropdownMenuSeparator /> */}
+					<DropdownMenuSeparator />
 					<DropdownMenuItem
 						className='flex items-center cursor-pointer text-destructive focus:text-destructive'
 						onSelect={() => setShowDeleteAlert(true)}>

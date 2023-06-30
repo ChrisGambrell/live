@@ -4,24 +4,22 @@ import { Input } from '@/components/ui/input'
 import { supaclient } from '@/lib/supabase-client'
 import { zodResolver } from '@hookform/resolvers/zod'
 import dayjs from 'dayjs'
-import { useRouter } from 'next/router'
 import { useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
 import { z } from 'zod'
 
-const newSchema = z.object({ name: z.string().nonempty(), date: z.string() })
-type TNew = z.infer<typeof newSchema>
+const formSchema = z.object({ name: z.string().nonempty(), date: z.string() })
+type TForm = z.infer<typeof formSchema>
 
 export default function StreamForm() {
-	const router = useRouter()
 	const supabase = supaclient()
 
-	const form = useForm<TNew>({
-		resolver: zodResolver(newSchema),
+	const form = useForm<TForm>({
+		resolver: zodResolver(formSchema),
 		defaultValues: { name: '', date: dayjs().startOf('hour').add(1, 'hour').format('YYYY-MM-DDTHH:mm') },
 	})
 
-	async function onSubmit(values: TNew) {
+	async function onSubmit(values: TForm) {
 		const { roomId: meetingId } = await fetch('/api/meetings', { method: 'POST' }).then((res) => res.json())
 
 		const { error } = await supabase.from('streams').insert({ ...values, meeting_id: meetingId })
