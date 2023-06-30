@@ -25,7 +25,7 @@ export default function ViewerView() {
 
 				const player = document.querySelector('#hlsPlayer')
 				hls.loadSource(hlsUrls.downstreamUrl)
-				hls.attachMedia(player)
+				hls.attachMedia(player as HTMLMediaElement)
 			} else {
 				if (typeof playerRef.current?.play === 'function') {
 					playerRef.current.src = hlsUrls.downstreamUrl
