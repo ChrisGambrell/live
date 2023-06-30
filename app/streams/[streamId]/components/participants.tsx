@@ -9,7 +9,7 @@ export default function Participants() {
 		<Card className='w-[400px] flex-shrink-0'>
 			<CardHeader>
 				<CardTitle>Participants</CardTitle>
-				<CardDescription>There are {[...participants].length - 1} people watching the stream</CardDescription>
+				<CardDescription>There are {participants.size - 1} people watching the stream</CardDescription>
 			</CardHeader>
 			<CardContent>
 				{[...participants.values()]
