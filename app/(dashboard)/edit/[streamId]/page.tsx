@@ -7,10 +7,13 @@ import StreamForm from './components/stream-form'
 import StreamUpload from './components/stream-upload'
 
 export default async function EditStreamPage({ params: { streamId } }: { params: { streamId: string } }) {
-	const user = await verifyAuth()
+	await verifyAuth()
 	const { data: stream } = await supaclient().from('streams').select().eq('id', streamId).single()
-
 	if (!stream) notFound()
+
+	const { data: streamMedia } = await supaclient()
+		.storage.from('stream_media')
+		.list(undefined, { search: `${stream.id}` })
 
 	return (
 		<Shell>
@@ -19,7 +22,7 @@ export default async function EditStreamPage({ params: { streamId } }: { params:
 				<StreamForm stream={stream} />
 			</div>
 			<div className='grid gap-10'>
-				<StreamUpload stream={stream} />
+				<StreamUpload stream={stream} streamMedia={streamMedia} />
 			</div>
 		</Shell>
 	)
