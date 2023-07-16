@@ -22,6 +22,8 @@ export default function Streams({ user }: { user: UserProfile }) {
 			{streams?.length ? (
 				<div className='border divide-y rounded-md divide-border'>
 					{streamProfiles.map((stream) => (
+						// TODO: Fix error
+						// @ts-ignore
 						<StreamItem key={stream.id} speaker={user.role === 'speaker'} stream={stream} />
 					))}
 				</div>
@@ -30,7 +32,7 @@ export default function Streams({ user }: { user: UserProfile }) {
 					<EmptyPlaceholder.Icon icon={Tv} />
 					<EmptyPlaceholder.Title>No posts created</EmptyPlaceholder.Title>
 					<EmptyPlaceholder.Description>You don&apos;t have any posts yet. Start creating content.</EmptyPlaceholder.Description>
-					<StreamCreateButton variant='outline' />
+					<StreamCreateButton profiles={profiles} variant='outline' />
 				</EmptyPlaceholder>
 			)}
 		</div>

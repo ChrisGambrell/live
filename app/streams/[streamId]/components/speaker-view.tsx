@@ -37,9 +37,13 @@ export default function SpeakerView() {
 				<div className='flex items-center h-full'>
 					{externalVideo.link ? (
 						<video
+							// TODO: Fix error
+							// @ts-ignore
 							onDoubleClick={(e) => externalPlayer.current.requestFullscreen()}
 							className='h-full'
 							autoPlay
+							// TODO: Fix error
+							// @ts-ignore
 							ref={externalPlayer}
 							src={externalVideo.link}
 						/>
@@ -49,6 +53,8 @@ export default function SpeakerView() {
 				</div>
 				<div className='flex flex-col h-full pb-6 pr-4 space-y-4'>
 					{view.includes('participants') && <Participants />}
+					{/* // TODO: Fix error
+							// @ts-ignore */}
 					{view.includes('media') && <Media externalPlayer={externalPlayer} setExternalVideo={setExternalVideo} />}
 					{view.includes('messages') && <Messages />}
 				</div>

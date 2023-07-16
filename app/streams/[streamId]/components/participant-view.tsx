@@ -30,7 +30,8 @@ export default function ParticipantView({ participantId }: { participantId: stri
 	}, [micStream, micOn])
 
 	return (
-		<div className='relative w-full'>
+		<div className='relative w-full bg-red-50 min-h-[250px]'>
+			{/* <pre>{JSON.stringify(webcamStream, null, 2)}</pre> */}
 			<div className='absolute bottom-0 left-0 px-1 bg-white'>{displayName}</div>
 			{!micOn && (
 				<div className='absolute bottom-0 right-0 px-1 bg-white'>

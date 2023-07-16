@@ -3,6 +3,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
 import { SupaSelectType } from '@/lib/supabase'
 import { supaclient } from '@/lib/supabase-client'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -44,34 +45,23 @@ export default function StreamUpload({
 	}
 
 	return (
-		<Form {...form}>
-			<form>
-				<Card>
-					<CardHeader>
-						<CardTitle>Uploaded Media</CardTitle>
-					</CardHeader>
-					<CardContent className='space-y-4'>
-						<ul className='ml-6 list-disc [&>li]:mt-2'>
-							{streamMedia?.map((media) => (
-								<li key={media.id}>{media.name}</li>
-							))}
-						</ul>
-						<FormField
-							control={form.control}
-							name='name'
-							render={() => (
-								<FormItem>
-									<FormLabel>Upload new</FormLabel>
-									<FormControl>
-										<Input className='max-w-[400px]' type='file' onChange={handleSubmit} />
-									</FormControl>
-									<FormMessage />
-								</FormItem>
-							)}
-						/>
-					</CardContent>
-				</Card>
-			</form>
-		</Form>
+		<form>
+			<Card>
+				<CardHeader>
+					<CardTitle>Uploaded Media</CardTitle>
+				</CardHeader>
+				<CardContent className='space-y-4'>
+					<ul className='ml-6 list-disc [&>li]:mt-2'>
+						{streamMedia?.map((media) => (
+							<li key={media.id}>{media.name}</li>
+						))}
+					</ul>
+					<div className='space-y-2'>
+						<Label>Upload new</Label>
+						<Input className='max-w-[400px]' type='file' onChange={handleSubmit} />
+					</div>
+				</CardContent>
+			</Card>
+		</form>
 	)
 }

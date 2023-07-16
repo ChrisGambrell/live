@@ -1,15 +1,17 @@
-import { useMeeting } from '@videosdk.live/react-sdk'
+import { useMeeting, useParticipant } from '@videosdk.live/react-sdk'
 import Hls from 'hls.js'
 import { useEffect, useRef } from 'react'
 import { toast } from 'react-hot-toast'
 import Messages from './messages'
+import ParticipantView from './participant-view'
 import Participants from './participants'
 
 export default function ViewerView() {
-	const { hlsState, hlsUrls, meetingId } = useMeeting({
+	const { hlsState, hlsUrls, meetingId, localParticipant, participants } = useMeeting({
 		onHlsStarted: () => toast('The livestream is starting', { icon: '⏯️' }),
 		onHlsStopped: () => toast('The livestream has ended', { icon: '⏯️' }),
 	})
+	const { webcamStream } = useParticipant(localParticipant.id)
 	const playerRef = useRef<HTMLVideoElement>(null)
 
 	useEffect(() => {
@@ -17,7 +19,7 @@ export default function ViewerView() {
 			if (Hls.isSupported()) {
 				const hls = new Hls({
 					capLevelToPlayerSize: true,
-					maxLoadingDelay: 4,
+					// maxLoadingDelay: 4,
 					minAutoBitrate: 0,
 					autoStartLoad: true,
 					defaultAudioCodec: 'mp4a.40.2',
@@ -38,11 +40,16 @@ export default function ViewerView() {
 	return (
 		<div className='flex flex-grow space-x-4'>
 			<div className='flex items-center w-full h-full'>
+				{/* <pre>{JSON.stringify(hlsState, null, 2)}</pre> */}
+				{/* <pre>{JSON.stringify(webcamStream, null, 2)}</pre> */}
+				{/* <pre>{JSON.stringify([...participants.values()].filter((p) => p.mode === 'CONFERENCE')[0].id, null, 2)}</pre> */}
+				{/* {!(hlsState === 'HLS_PLAYABLE' || hlsState === 'HLS_STARTING') ? ( */}
 				{hlsState !== 'HLS_PLAYABLE' ? (
 					<div className='flex-grow w-full'>
 						<div className='flex items-center justify-center h-full'>Stream has not started yet</div>
 					</div>
 				) : (
+					// (hlsState === 'HLS_PLAYABLE' || hlsState === 'HLS_STARTING') && (
 					hlsState === 'HLS_PLAYABLE' && (
 						<div className='flex-grow'>
 							<video
@@ -54,6 +61,9 @@ export default function ViewerView() {
 								playsInline
 								onError={(err) => console.error(err, 'hls video error')}
 							/>
+							{/* {[...participants.values()].filter((p) => p.mode === 'CONFERENCE').length > 0 && (
+								<ParticipantView participantId={[...participants.values()].filter((p) => p.mode === 'CONFERENCE')[0].id} />
+							)} */}
 						</div>
 					)
 				)}

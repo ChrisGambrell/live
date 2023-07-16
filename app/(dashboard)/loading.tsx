@@ -7,7 +7,8 @@ export default function DashboardLoading() {
 	return (
 		<Shell>
 			<Header heading='Posts' text='Create and manage posts.'>
-				<StreamCreateButton />
+				{/* TODO: Activate this and include props */}
+				{/* <StreamCreateButton /> */}
 			</Header>
 			<div className='border divide-y rounded-md divide-border-200'>
 				<StreamItem.Skeleton />
