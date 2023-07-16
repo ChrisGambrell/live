@@ -1,17 +1,20 @@
 import { Muted } from '@/components/ui/typography'
 import { Constants, useMeeting } from '@videosdk.live/react-sdk'
-import { Clapperboard, LogOut, MessageSquare, Mic, MicOff, MonitorX, Users2, Video, VideoOff } from 'lucide-react'
-import { useMemo, useState } from 'react'
+import { Clapperboard, Image, LogOut, MessageSquare, Mic, MicOff, MonitorX, Users2, Video, VideoOff } from 'lucide-react'
+import { useMemo, useRef, useState } from 'react'
 import { toast } from 'react-hot-toast'
 import ActionIcon from './action-icon'
 import Controls from './controls'
+import Media from './media'
 import Messages from './messages'
 import ParticipantView from './participant-view'
 import Participants from './participants'
 
-type View = 'participants' | 'messages'
+type View = 'participants' | 'messages' | 'media'
 
 export default function SpeakerView() {
+	const externalPlayer = useRef<HTMLVideoElement>()
+	const [externalVideo, setExternalVideo] = useState({ link: null, playing: false, index: null })
 	const [view, setView] = useState<View[]>(['participants', 'messages'])
 
 	const { participants, meetingId } = useMeeting({
@@ -32,12 +35,21 @@ export default function SpeakerView() {
 		<>
 			<div className='flex flex-grow space-x-4'>
 				<div className='flex items-center h-full'>
-					{speakers.map((p) => (
-						<ParticipantView key={p.id} participantId={p.id} />
-					))}
+					{externalVideo.link ? (
+						<video
+							onDoubleClick={(e) => externalPlayer.current.requestFullscreen()}
+							className='h-full'
+							autoPlay
+							ref={externalPlayer}
+							src={externalVideo.link}
+						/>
+					) : (
+						speakers.map((p) => <ParticipantView key={p.id} participantId={p.id} />)
+					)}
 				</div>
 				<div className='flex flex-col h-full pb-6 pr-4 space-y-4'>
 					{view.includes('participants') && <Participants />}
+					{view.includes('media') && <Media externalPlayer={externalPlayer} setExternalVideo={setExternalVideo} />}
 					{view.includes('messages') && <Messages />}
 				</div>
 			</div>
@@ -50,6 +62,7 @@ export default function SpeakerView() {
 					<div className='flex justify-end space-x-2'>
 						<ActionIcon icon={Users2} onClick={() => toggleView('participants')} />
 						<ActionIcon icon={MessageSquare} onClick={() => toggleView('messages')} />
+						<ActionIcon icon={Image} onClick={() => toggleView('media')} />
 					</div>
 				</div>
 			</div>

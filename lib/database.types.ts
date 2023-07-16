@@ -3,7 +3,7 @@ export type Json =
   | number
   | boolean
   | null
-  | { [key: string]: Json }
+  | { [key: string]: Json | undefined }
   | Json[]
 
 export interface Database {
@@ -113,23 +113,39 @@ export interface Database {
           date: string
           id: string
           meeting_id: string
+          month: number | null
           name: string
+          presenter: string
+          week: number | null
         }
         Insert: {
           created_at?: string
           date: string
           id?: string
           meeting_id: string
+          month?: number | null
           name: string
+          presenter?: string
+          week?: number | null
         }
         Update: {
           created_at?: string
           date?: string
           id?: string
           meeting_id?: string
+          month?: number | null
           name?: string
+          presenter?: string
+          week?: number | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "streams_presenter_fkey"
+            columns: ["presenter"]
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          }
+        ]
       }
       subpub: {
         Row: {
@@ -188,7 +204,19 @@ export interface Database {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      delete_avatar: {
+        Args: {
+          avatar_url: string
+        }
+        Returns: Record<string, unknown>
+      }
+      delete_storage_object: {
+        Args: {
+          bucket: string
+          object: string
+        }
+        Returns: Record<string, unknown>
+      }
     }
     Enums: {
       [_ in never]: never
