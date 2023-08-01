@@ -1,5 +1,6 @@
 import { supaclient } from '@/lib/supabase-client'
 import { verifyAuth } from '@/lib/supabase-server'
+import { Metadata, ResolvingMetadata } from 'next'
 import { notFound } from 'next/navigation'
 import { Header } from '../../components/header'
 import Shell from '../../components/shell'

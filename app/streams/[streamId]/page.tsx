@@ -1,9 +1,21 @@
 import MainNav from '@/components/main-nav'
 import { UserNav } from '@/components/user-nav'
+import { supaclient } from '@/lib/supabase-client'
 import { supaserver, verifyAuth } from '@/lib/supabase-server'
+import { Metadata, ResolvingMetadata } from 'next'
 import { cookies } from 'next/headers'
 import { notFound } from 'next/navigation'
 import Meeting from './components/meeting'
+
+type Props = {
+	params: { streamId: string }
+	searchParams: { [key: string]: string | string[] | undefined }
+}
+
+export async function generateMetadata({ params: { streamId }, searchParams }: Props, parent: ResolvingMetadata): Promise<Metadata> {
+	const { data: stream } = await supaclient().from('streams').select().eq('id', streamId).single()
+	return { title: stream?.name || 'Stepworks Live' }
+}
 
 export default async function StreamPage({
 	params: { streamId },
