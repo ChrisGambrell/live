@@ -1,14 +1,12 @@
 'use client'
 
 import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
-import { SupaSelectType } from '@/lib/supabase'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { supaclient } from '@/lib/supabase-client'
 import { useMeeting } from '@videosdk.live/react-sdk'
 import { Pause, Play } from 'lucide-react'
 import { Dispatch, MutableRefObject, SetStateAction, useEffect, useState } from 'react'
 import { toast } from 'react-hot-toast'
-import stream from 'stream'
 
 export default function Media({
 	externalPlayer,
