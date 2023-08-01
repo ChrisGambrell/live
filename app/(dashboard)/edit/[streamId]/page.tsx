@@ -8,12 +8,11 @@ import StreamUpload from './components/stream-upload'
 
 export default async function EditStreamPage({ params: { streamId } }: { params: { streamId: string } }) {
 	await verifyAuth()
+
 	const { data: stream } = await supaclient().from('streams').select().eq('id', streamId).single()
 	if (!stream) notFound()
 
-	const { data: streamMedia } = await supaclient()
-		.storage.from('stream_media')
-		.list(undefined, { search: `${stream.id}` })
+	const { data: streamMedia } = await supaclient().storage.from('stream_media').list(stream.id)
 
 	return (
 		<Shell>

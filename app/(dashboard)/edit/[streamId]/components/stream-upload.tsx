@@ -1,20 +1,14 @@
 'use client'
 
+import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { SupaSelectType } from '@/lib/supabase'
 import { supaclient } from '@/lib/supabase-client'
-import { zodResolver } from '@hookform/resolvers/zod'
-import {} from '@supabase/auth-helpers-nextjs'
-import { ChangeEventHandler } from 'react'
-import { useForm } from 'react-hook-form'
+import { useRouter } from 'next/navigation'
+import { FormEventHandler, useState } from 'react'
 import { toast } from 'react-hot-toast'
-import { z } from 'zod'
-
-const formSchema = z.object({})
-type TForm = z.infer<typeof formSchema>
 
 export default function StreamUpload({
 	stream,
@@ -23,29 +17,46 @@ export default function StreamUpload({
 	stream: SupaSelectType<'streams'>
 	streamMedia: { id: string; name: string }[] | null
 }) {
-	const form = useForm<TForm>({ resolver: zodResolver(formSchema) })
+	const router = useRouter()
+	const [name, setName] = useState('')
+	const [files, setFiles] = useState<FileList | null>(null)
 
-	const handleSubmit: ChangeEventHandler<HTMLInputElement> = async (event) => {
+	const uploadFile = async (file: File, filePath: string) => {
+		const { error } = await supaclient().storage.from('stream_media').upload(filePath, file)
+		if (error) {
+			console.error(error)
+			throw error
+		}
+	}
+
+	const handleSubmit: FormEventHandler = async (event) => {
 		event.preventDefault()
 
 		try {
-			if (!event.target.files || event.target.files.length === 0) throw new Error('You must select an image to upload.')
+			console.log(files)
+			if (!name || name.trim() === '') return toast.error('Please enter a name for the file.')
+			if (!files || files.length === 0) return toast.error('You must select media to upload.')
 
-			const file = event.target.files[0]
+			const file = files[0]
 			const fileExt = file.name.split('.').pop()
-			const filePath = `${stream.id}-${Math.random()}.${fileExt}`
+			const filePath = `${stream.id}/${name}_${Math.random()}.${fileExt}`
 
-			let { error: uploadError } = await supaclient().storage.from('stream_media').upload(filePath, file)
+			await toast.promise(uploadFile(file, filePath), {
+				loading: 'Uploading...',
+				success: 'Successfully uploaded file!',
+				error: 'There was an error uploading the file.',
+			})
 
-			if (uploadError) throw uploadError
-			toast.success('Successfully uploaded media')
+			router.refresh()
 		} catch (error) {
 			toast.error('Error uploading media')
 		}
 	}
 
+	console.log(streamMedia)
+
 	return (
-		<form>
+		<form onSubmit={handleSubmit}>
 			<Card>
 				<CardHeader>
 					<CardTitle>Uploaded Media</CardTitle>
@@ -53,12 +64,26 @@ export default function StreamUpload({
 				<CardContent className='space-y-4'>
 					<ul className='ml-6 list-disc [&>li]:mt-2'>
 						{streamMedia?.map((media) => (
-							<li key={media.id}>{media.name}</li>
+							<li key={media.id}>
+								{media.name.split('_').slice(0, -1).join('_')}{' '}
+								<span
+									className='text-xs cursor-pointer text-primary hover:underline'
+									onClick={async () => {
+										await supaclient()
+											.storage.from('stream_media')
+											.remove([`${stream.id}/${media.name}`])
+										router.refresh()
+									}}>
+									(remove)
+								</span>
+							</li>
 						))}
 					</ul>
-					<div className='space-y-2'>
+					<div className='space-y-3'>
 						<Label>Upload new</Label>
-						<Input className='max-w-[400px]' type='file' onChange={handleSubmit} />
+						<Input className='max-w-[400px]' placeholder='Name' value={name} onChange={(e) => setName(e.target.value)} />
+						<Input className='max-w-[400px] file-upload' type='file' onChange={(event) => setFiles(event.target.files)} />
+						<Button>Upload</Button>
 					</div>
 				</CardContent>
 			</Card>

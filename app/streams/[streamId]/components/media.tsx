@@ -8,6 +8,7 @@ import { useMeeting } from '@videosdk.live/react-sdk'
 import { Pause, Play } from 'lucide-react'
 import { Dispatch, MutableRefObject, SetStateAction, useEffect, useState } from 'react'
 import { toast } from 'react-hot-toast'
+import stream from 'stream'
 
 export default function Media({
 	externalPlayer,
@@ -46,10 +47,7 @@ export default function Media({
 		const getStreamMedias = async () => {
 			const { data: stream } = await supaclient().from('streams').select().eq('meeting_id', meetingId).single()
 			if (!stream) return toast.error('There was an error getting media for the stream')
-
-			const { data: medias } = await supaclient()
-				.storage.from('stream_media')
-				.list(undefined, { search: `${stream.id}` })
+			const { data: medias } = await supaclient().storage.from('stream_media').list(stream.id)
 			setStreamMedia(medias!)
 		}
 
@@ -77,16 +75,16 @@ export default function Media({
 				<div>{}</div>
 				{streamMedia?.map((media, i) => (
 					<div key={media.id} className='flex items-center space-x-1'>
-						<div className='flex-grow truncate'>{media.name}</div>
+						<div className='flex-grow truncate'>{media.name.split('_').slice(0, -1).join('_')}</div>
 						<Button
-							size='sm'
+							size='xs'
 							variant='secondary'
 							onClick={() => {
 								setSelectedMedia(i)
 								if (selectedMedia === i) handleStopVideo()
 								else handleStartVideo(media.name)
 							}}>
-							{selectedMedia === i ? <Pause className='w-5 h-5' /> : <Play className='w-5 h-5' />}
+							{selectedMedia === i ? <Pause className='w-4 h-4' /> : <Play className='w-4 h-4' />}
 						</Button>
 					</div>
 				))}
