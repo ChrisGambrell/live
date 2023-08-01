@@ -24,7 +24,7 @@ export default function Streams({ user }: { user: UserProfile }) {
 					{streamProfiles.map((stream) => (
 						// TODO: Fix error
 						// @ts-ignore
-						<StreamItem key={stream.id} speaker={user.role === 'speaker'} stream={stream} />
+						<StreamItem key={stream.id} speaker={user.role === 'speaker'} stream={stream} user={user} />
 					))}
 				</div>
 			) : (
