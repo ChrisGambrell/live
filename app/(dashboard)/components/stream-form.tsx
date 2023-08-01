@@ -35,10 +35,14 @@ export default function StreamForm({ profiles }: { profiles: SupaSelectType<'pro
 		const { roomId: meetingId } = await fetch('/api/meetings', { method: 'POST' }).then((res) => res.json())
 
 		if (!repeat) {
-			const { error } = await supabase.from('streams').insert({ ...values, meeting_id: meetingId })
+			const { error } = await supabase
+				.from('streams')
+				.insert({ ...values, meeting_id: meetingId, date: dayjs(values.date).toISOString() })
 			if (error) return toast.error(error.message)
 		} else {
-			const { error } = await supabase.from('streams').insert({ ...values, meeting_id: meetingId, [repeatValue]: repeatNumber })
+			const { error } = await supabase
+				.from('streams')
+				.insert({ ...values, meeting_id: meetingId, [repeatValue]: repeatNumber, date: dayjs(values.date).toISOString() })
 			if (error) return toast.error(error.message)
 		}
 

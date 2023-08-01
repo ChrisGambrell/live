@@ -18,7 +18,7 @@ export default function Streams({ user }: { user: UserProfile }) {
 	)
 
 	return (
-		<div>
+		<div className='pb-4'>
 			{streams?.length ? (
 				<div className='border divide-y rounded-md divide-border'>
 					{streamProfiles.map((stream) => (

@@ -9,10 +9,13 @@ import {
 import { Skeleton } from '@/components/ui/skeleton'
 import { SupaSelectType, UserProfile } from '@/lib/supabase'
 import dayjs from 'dayjs'
+import utc from 'dayjs/plugin/utc'
 import { MoreVertical } from 'lucide-react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { StreamOperations } from './stream-operations'
+
+dayjs.extend(utc)
 
 export function StreamItem({
 	speaker,
@@ -35,8 +38,7 @@ export function StreamItem({
 					{stream.presenter && <div className='text-xs italic text-gray-400'>({stream.presenter.name})</div>}
 				</div>
 				<div>
-					{/* TODO: Fix dates here. Should store as the timezone the user is in */}
-					<p className='text-sm text-muted-foreground'>{dayjs(stream.date).add(4, 'hours').format('MMMM D, YYYY h:mma')}</p>
+					<p className='text-sm text-muted-foreground'>{dayjs.utc(stream.date).local().format('MMMM D, YYYY h:mma')}</p>
 				</div>
 				{(stream.week || stream.month) && (
 					<div>
