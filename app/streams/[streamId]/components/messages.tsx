@@ -59,7 +59,7 @@ export default function Messages() {
 	}, [meetingId, supabase])
 
 	return (
-		<Card className='w-[400px] max-h-[750px] flex-1 flex flex-col'>
+		<Card className='w-[400px] max-h-[375px] flex-1 flex flex-col'>
 			<CardHeader className='flex-shrink-0'>
 				<CardTitle>Messages</CardTitle>
 			</CardHeader>
