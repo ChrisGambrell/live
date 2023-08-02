@@ -15,7 +15,11 @@ export default function Messages() {
 
 	useEffect(() => {
 		async function getInitialData() {
-			const { data, error } = await supabase.from('messages').select().eq('meeting_id', meetingId)
+			const { data, error } = await supabase
+				.from('messages')
+				.select()
+				.eq('meeting_id', meetingId)
+				.order('created_at', { ascending: false })
 			if (error || !data) throw error || new Error('Something went wrong getting the initial data')
 			setMessages(data)
 		}
@@ -30,7 +34,7 @@ export default function Messages() {
 				'postgres_changes',
 				{ event: 'INSERT', schema: 'public', table: 'messages', filter: `meeting_id=eq.${meetingId}` },
 				(payload) => {
-					setMessages((prev) => [...prev, payload.new])
+					setMessages((prev) => [payload.new, ...prev])
 				}
 			)
 			.on<SupaSelectType<'messages'>>(
@@ -55,14 +59,14 @@ export default function Messages() {
 	}, [meetingId, supabase])
 
 	return (
-		<Card className='w-[400px] flex-1 flex flex-col'>
+		<Card className='w-[400px] max-h-[750px] flex-1 flex flex-col'>
 			<CardHeader className='flex-shrink-0'>
 				<CardTitle>Messages</CardTitle>
 			</CardHeader>
-			<CardContent className='flex-1'>
+			<CardContent className='flex-1 overflow-scroll divide-y'>
 				{messages.length > 0 ? (
 					messages.map((m) => (
-						<p key={m.id}>
+						<p key={m.id} className='p-1'>
 							<span className='font-semibold'>{m.display_name}: </span>
 							{m.message}
 						</p>
