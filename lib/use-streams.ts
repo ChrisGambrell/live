@@ -9,7 +9,11 @@ const useStreams = () => {
 
 	useEffect(() => {
 		async function getInitialData() {
-			const { data, error } = await supabase.from('streams').select().gte('date', dayjs().format('YYYY-MM-DD'))
+			const { data, error } = await supabase
+				.from('streams')
+				.select()
+				.gte('date', dayjs().format('YYYY-MM-DD'))
+				.order('date', { ascending: true })
 			if (error || !data) throw error || new Error('Something went wrong getting the initial streams')
 			setData(data)
 		}
@@ -21,10 +25,15 @@ const useStreams = () => {
 		const channel = supabase
 			.channel('streams')
 			.on<SupaSelectType<'streams'>>('postgres_changes', { event: 'INSERT', schema: 'public', table: 'streams' }, (payload) => {
-				if (!dayjs.utc(payload.new.date).local().isBefore(dayjs().startOf('day'))) setData((prev) => [...prev, payload.new])
+				if (!dayjs.utc(payload.new.date).local().isBefore(dayjs().startOf('day')))
+					setData((prev) => [...prev, payload.new].sort((a, b) => (dayjs(a.date).isBefore(dayjs(b.date)) ? -1 : 1)))
 			})
 			.on<SupaSelectType<'streams'>>('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'streams' }, (payload) => {
-				setData((prev) => prev.map((p) => (p.id === payload.old.id ? payload.new : p)))
+				setData((prev) =>
+					prev
+						.map((p) => (p.id === payload.old.id ? payload.new : p))
+						.sort((a, b) => (dayjs(a.date).isBefore(dayjs(b.date)) ? -1 : 1))
+				)
 			})
 			.on<SupaSelectType<'streams'>>('postgres_changes', { event: 'DELETE', schema: 'public', table: 'streams' }, (payload) => {
 				setData((prev) => prev.filter((p) => p.id !== payload.old.id))
