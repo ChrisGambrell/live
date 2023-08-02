@@ -48,7 +48,6 @@ export function StreamItem({
 						</p>
 					</div>
 				)}
-				{/* TODO: Maybe limit people from hosting unless they are assigned as the host? */}
 				{/* {user.role === 'speaker' && (
 					<div className='flex items-center mt-1 space-x-2'>
 						{stream.presenter?.id === user.id && (
