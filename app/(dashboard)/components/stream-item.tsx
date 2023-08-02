@@ -64,6 +64,7 @@ export function StreamItem({
 				<div>
 					<Button
 						size='xs'
+						variant='secondary'
 						onClick={() => router.push(`/streams/${stream.id}${stream.presenter?.id === user.id ? '?mode=speaker' : ''}`)}>
 						Join stream{stream.presenter?.id === user.id && ' as Host'}
 					</Button>
