@@ -1,6 +1,6 @@
 import { Muted } from '@/components/ui/typography'
 import { Constants, useMeeting } from '@videosdk.live/react-sdk'
-import { Clapperboard, Image, LogOut, MessageSquare, Mic, MicOff, MonitorX, Users2, Video, VideoOff } from 'lucide-react'
+import { Image, MessageSquare, Users2 } from 'lucide-react'
 import { useMemo, useRef, useState } from 'react'
 import { toast } from 'react-hot-toast'
 import ActionIcon from './action-icon'
@@ -9,6 +9,7 @@ import Media from './media'
 import Messages from './messages'
 import ParticipantView from './participant-view'
 import Participants from './participants'
+import ScreenShareFeed from './screen-share-feed'
 
 type View = 'participants' | 'messages' | 'media'
 
@@ -17,8 +18,10 @@ export default function SpeakerView() {
 	const [externalVideo, setExternalVideo] = useState({ link: null, playing: false, index: null })
 	const [view, setView] = useState<View[]>(['participants', 'messages'])
 
-	const { participants, meetingId } = useMeeting({
+	const { participants, meetingId, localScreenShareOn, localParticipant } = useMeeting({
+		onHlsStarted: () => toast('You are now live!', { icon: '🔴' }),
 		onParticipantJoined: (participant) => toast(`${participant.displayName} has joined`, { icon: '👋' }),
+		onParticipantLeft: (participant) => toast(`${participant.displayName} has disconnected`, { icon: '🫠' }),
 	})
 
 	const speakers = useMemo(() => {
@@ -47,6 +50,13 @@ export default function SpeakerView() {
 							ref={externalPlayer}
 							src={externalVideo.link}
 						/>
+					) : localScreenShareOn ? (
+						<div className='relative'>
+							<ScreenShareFeed participantId={localParticipant.id} />
+							<div className='fixed bottom-[72px] left-2 rounded border shadow-lg w-[250px] h-[150px]'>
+								<ParticipantView participantId={localParticipant.id} />
+							</div>
+						</div>
 					) : (
 						speakers.map((p) => <ParticipantView key={p.id} participantId={p.id} />)
 					)}
