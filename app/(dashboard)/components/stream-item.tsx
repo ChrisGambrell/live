@@ -49,7 +49,7 @@ export function StreamItem({
 					</div>
 				)}
 				{/* TODO: Maybe limit people from hosting unless they are assigned as the host? */}
-				{user.role === 'speaker' && (
+				{/* {user.role === 'speaker' && (
 					<div className='flex items-center mt-1 space-x-2'>
 						{stream.presenter?.id === user.id && (
 							<Button size='xs' onClick={() => router.push(`/streams/${stream.id}?mode=speaker`)}>
@@ -60,7 +60,14 @@ export function StreamItem({
 							Join as Viewer
 						</Button>
 					</div>
-				)}
+				)} */}
+				<div>
+					<Button
+						size='xs'
+						onClick={() => router.push(`/streams/${stream.id}${stream.presenter?.id === user.id ? '?mode=speaker' : ''}`)}>
+						Join stream{stream.presenter?.id === user.id && ' as Host'}
+					</Button>
+				</div>
 			</div>
 			{speaker && <StreamOperations stream={stream} />}
 		</div>
