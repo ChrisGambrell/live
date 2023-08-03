@@ -5,30 +5,22 @@ import { MeetingConsumer, MeetingProvider } from '@videosdk.live/react-sdk'
 import { useRouter } from 'next/navigation'
 import Container from './container'
 
-export default function Meeting({
-	mode,
-	stream,
-	token,
-	user,
-}: {
-	mode: 'CONFERENCE' | 'VIEWER'
-	stream: SupaSelectType<'streams'>
-	token: string
-	user: UserProfile
-}) {
+export default function Meeting({ stream, token, user }: { stream: SupaSelectType<'streams'>; token: string; user: UserProfile }) {
 	const router = useRouter()
+	console.log(stream)
 
 	return (
 		<MeetingProvider
 			config={{
 				meetingId: stream.meeting_id,
-				micEnabled: true,
-				webcamEnabled: true,
+				micEnabled: stream.presenter === user.id,
+				webcamEnabled: stream.presenter === user.id,
 				name: user.name,
-				mode,
+				multiStream: false,
+				maxResolution: 'hd',
 			}}
 			token={token}>
-			<MeetingConsumer>{() => <Container onMeetingLeave={() => router.push('/')} />}</MeetingConsumer>
+			<MeetingConsumer>{() => <Container stream={stream} user={user} onMeetingLeave={() => router.push('/')} />}</MeetingConsumer>
 		</MeetingProvider>
 	)
 }

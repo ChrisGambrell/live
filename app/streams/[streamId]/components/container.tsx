@@ -1,17 +1,22 @@
 'use client'
 
 import { Button } from '@/components/ui/button'
+import { SupaSelectType, UserProfile } from '@/lib/supabase'
 import { useMeeting } from '@videosdk.live/react-sdk'
 import { useEffect, useRef, useState } from 'react'
 import SpeakerView from './speaker-view'
-import ViewerView from './viewer-view'
 
-export default function Container({ onMeetingLeave }: { onMeetingLeave: () => void }) {
+export default function Container({
+	stream,
+	user,
+	onMeetingLeave,
+}: {
+	stream: SupaSelectType<'streams'>
+	user: UserProfile
+	onMeetingLeave: () => void
+}) {
 	const meeting = useMeeting({
-		onMeetingJoined: () => {
-			if (meetingRef.current.localParticipant.mode === 'CONFERENCE') meetingRef.current.localParticipant.pin('CAM')
-			setJoined('JOINED')
-		},
+		onMeetingJoined: () => setJoined('JOINED'),
 		onMeetingLeft: () => {
 			setJoined(null)
 			onMeetingLeave()
@@ -19,7 +24,7 @@ export default function Container({ onMeetingLeave }: { onMeetingLeave: () => vo
 		onError: (err) => console.error(err),
 	})
 	const meetingRef = useRef(meeting)
-	const { join, localParticipant } = useMeeting()
+	const { join } = useMeeting()
 	const [joined, setJoined] = useState<string | null>(null)
 
 	useEffect(() => {
@@ -34,11 +39,7 @@ export default function Container({ onMeetingLeave }: { onMeetingLeave: () => vo
 	return (
 		<div className='flex flex-col h-full'>
 			{joined && joined === 'JOINED' ? (
-				localParticipant.mode === 'CONFERENCE' ? (
-					<SpeakerView />
-				) : localParticipant.mode === 'VIEWER' ? (
-					<ViewerView />
-				) : null
+				<SpeakerView stream={stream} user={user} />
 			) : joined && joined === 'JOINING' ? (
 				<div className='flex flex-col items-center justify-center h-full'>Joining the meeting...</div>
 			) : (

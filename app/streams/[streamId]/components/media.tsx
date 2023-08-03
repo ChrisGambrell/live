@@ -64,7 +64,7 @@ export default function Media({
 	}
 
 	return (
-		<Card className='w-[400px] flex-shrink-0'>
+		<Card className='w-[400px] H-[30%] flex-shrink-0'>
 			<CardHeader>
 				<CardTitle>Media</CardTitle>
 				<CardDescription>{streamMedia?.length || 0} items in the media library</CardDescription>
