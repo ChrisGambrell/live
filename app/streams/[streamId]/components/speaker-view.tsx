@@ -30,15 +30,19 @@ export default function SpeakerView({ stream, user }: { stream: SupaSelectType<'
 
 			switch (status) {
 				case 'stopped':
+					// @ts-ignore
 					externalPlayer.current.src = null
 					setExternalVideo({ link: null, playing: false })
 					break
 				case 'resumed':
+					// @ts-ignore
 					if (typeof currentTime === 'number') externalPlayer.current.currentTime = currentTime
+					// @ts-ignore
 					externalPlayer.current.play()
 					setExternalVideo((p) => ({ ...p, playing: true }))
 					break
 				case 'paused':
+					// @ts-ignore
 					externalPlayer.current.pause()
 					setExternalVideo((p) => ({ ...p, playing: false }))
 					break
@@ -49,8 +53,10 @@ export default function SpeakerView({ stream, user }: { stream: SupaSelectType<'
 					break
 			}
 		},
+		// @ts-ignore
 		onVideoSeeked: (data) => {
 			const { currentTime } = data
+			// @ts-ignore
 			if (typeof currentTime === 'number') externalPlayer.current.currentTime = currentTime
 		},
 	})
