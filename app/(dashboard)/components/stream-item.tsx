@@ -32,6 +32,7 @@ export function StreamItem({
 		<div className='flex justify-between p-4'>
 			<div className='grid gap-1'>
 				<div className='flex items-center space-x-2'>
+					{/* <div className='font-semibold'>{stream.name}</div> */}
 					<Link href={`/streams/${stream.id}`} className='font-semibold hover:underline' prefetch={false}>
 						{stream.name}
 					</Link>
@@ -61,10 +62,10 @@ export function StreamItem({
 					</div>
 				)} */}
 				<div className='mt-1'>
-					<Button
-						size='xs'
-						onClick={() => router.push(`/streams/${stream.id}${stream.presenter?.id === user.id ? '?mode=speaker' : ''}`)}>
-						Join stream{stream.presenter?.id === user.id && ' as Host'}
+					<Button asChild size='xs'>
+						<Link href={`/streams/${stream.id}${stream.presenter?.id === user.id ? '?mode=speaker' : ''}`}>
+							Join stream{stream.presenter?.id === user.id && ' as Host'}
+						</Link>
 					</Button>
 				</div>
 			</div>
