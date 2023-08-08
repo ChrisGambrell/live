@@ -7,6 +7,8 @@ import { cookies } from 'next/headers'
 import { notFound } from 'next/navigation'
 import Meeting from './components/meeting'
 
+export const dynamic = 'force-dynamic'
+
 type Props = {
 	params: { streamId: string }
 	searchParams: { [key: string]: string | string[] | undefined }

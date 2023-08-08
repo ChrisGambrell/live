@@ -5,6 +5,8 @@ import Shell from './components/shell'
 import { StreamCreateButton } from './components/stream-create-button'
 import Streams from './components/streams'
 
+export const dynamic = 'force-dynamic'
+
 export default async function HomePage() {
 	const user = await verifyAuth()
 	const { data: profiles } = await supaserver(cookies).from('profiles').select().eq('role', 'speaker')

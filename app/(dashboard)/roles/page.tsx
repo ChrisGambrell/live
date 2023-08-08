@@ -4,8 +4,10 @@ import { Header } from '../components/header'
 import Shell from '../components/shell'
 import { UserItem } from './components/user-item'
 
+export const dynamic = 'force-dynamic'
+
 export default async function RolesPage() {
-	const user = await verifyAuth()
+	await verifyAuth()
 	const { data: users } = await supaserver(cookies).from('profiles').select().order('created_at')
 
 	return (

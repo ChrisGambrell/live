@@ -4,6 +4,8 @@ import MainNav from '../../components/main-nav'
 import { UserNav } from '../../components/user-nav'
 import { DashboardNav } from './components/dashboard-nav'
 
+export const dynamic = 'force-dynamic'
+
 export default async function DashboardLayout({ children }: { children: ReactNode }) {
 	const user = await verifyAuth()
 

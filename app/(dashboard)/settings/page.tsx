@@ -3,6 +3,8 @@ import { Header } from '../components/header'
 import Shell from '../components/shell'
 import SettingsForm from './components/settings-form'
 
+export const dynamic = 'force-dynamic'
+
 export default async function SettingsPage() {
 	const user = await verifyAuth()
 
