@@ -89,8 +89,13 @@ export default function Media({
 								} = await supaclient().storage.from('stream_media').getPublicUrl(`/${streamId}/${media.name}`)
 								console.log(link)
 
-								if (externalVideo.link) stopVideo()
-								else startVideo({ link })
+								if (externalVideo.link) {
+									stopVideo()
+									setSelectedMedia(null)
+								} else {
+									startVideo({ link })
+									setSelectedMedia(i)
+								}
 							}}>
 							{selectedMedia === i ? <Pause className='w-4 h-4' /> : <Play className='w-4 h-4' />}
 						</Button>
