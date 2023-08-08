@@ -23,6 +23,7 @@ export default function SpeakerView({ stream, user }: { stream: SupaSelectType<'
 		onHlsStarted: () => toast('You are now live!', { icon: '🔴' }),
 		onParticipantJoined: (participant) => toast(`${participant.displayName} has joined`, { icon: '👋' }),
 		onParticipantLeft: (participant) => toast(`${participant.displayName} has disconnected`, { icon: '🫠' }),
+		// @ts-ignore
 		onVideoStateChanged: (data: any) => {
 			console.log('videoStateChanged', data)
 			const { currentTime, link, status } = data
