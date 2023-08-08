@@ -4,7 +4,14 @@ import { useEffect, useMemo, useRef } from 'react'
 import ReactPlayer from 'react-player'
 
 export default function ParticipantView({ participantId }: { participantId: string }) {
-	const { webcamStream, micStream, webcamOn, micOn, isLocal, displayName } = useParticipant(participantId)
+	const { unpin, pin, webcamStream, micStream, webcamOn, micOn, isLocal, displayName } = useParticipant(participantId, {
+		onStreamEnabled: (stream) => {
+			if (stream.kind === 'share') pin('SHARE')
+		},
+		onStreamDisabled: (stream) => {
+			if (stream.kind === 'share') unpin('SHARE')
+		},
+	})
 	const micRef = useRef<HTMLAudioElement>(null)
 
 	const videoStream = useMemo(() => {
@@ -29,9 +36,9 @@ export default function ParticipantView({ participantId }: { participantId: stri
 		}
 	}, [micStream, micOn])
 
+	if (!webcamStream) return null
 	return (
 		<div className='relative w-full min-h-[250px]'>
-			{/* <pre>{JSON.stringify(webcamStream, null, 2)}</pre> */}
 			<div className='absolute bottom-0 left-0 px-1 bg-white'>{displayName}</div>
 			{!micOn && (
 				<div className='absolute bottom-0 right-0 px-1 bg-white'>

@@ -9,10 +9,14 @@ import { Dispatch, MutableRefObject, SetStateAction, useEffect, useState } from 
 import { toast } from 'react-hot-toast'
 
 export default function Media({
+	streamId,
 	externalPlayer,
+	externalVideo,
 	setExternalVideo,
 }: {
+	streamId: string
 	externalPlayer: MutableRefObject<HTMLVideoElement>
+	externalVideo: { link: string | null; playing: boolean }
 	setExternalVideo: Dispatch<
 		SetStateAction<{
 			link: null
@@ -52,6 +56,8 @@ export default function Media({
 		getStreamMedias()
 	}, [meetingId])
 
+	console.log(streamMedia)
+
 	async function handleStartVideo(path: string) {
 		const {
 			data: { publicUrl },
@@ -64,7 +70,7 @@ export default function Media({
 	}
 
 	return (
-		<Card className='w-[400px] flex-shrink-0'>
+		<Card className='w-[400px] H-[30%] flex-shrink-0'>
 			<CardHeader>
 				<CardTitle>Media</CardTitle>
 				<CardDescription>{streamMedia?.length || 0} items in the media library</CardDescription>
@@ -77,10 +83,19 @@ export default function Media({
 						<Button
 							size='xs'
 							variant='secondary'
-							onClick={() => {
-								setSelectedMedia(i)
-								if (selectedMedia === i) handleStopVideo()
-								else handleStartVideo(media.name)
+							onClick={async () => {
+								const {
+									data: { publicUrl: link },
+								} = await supaclient().storage.from('stream_media').getPublicUrl(`/${streamId}/${media.name}`)
+								console.log(link)
+
+								if (externalVideo.link) {
+									stopVideo()
+									setSelectedMedia(null)
+								} else {
+									startVideo({ link })
+									setSelectedMedia(i)
+								}
 							}}>
 							{selectedMedia === i ? <Pause className='w-4 h-4' /> : <Play className='w-4 h-4' />}
 						</Button>
