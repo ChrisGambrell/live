@@ -1,23 +1,23 @@
 import MainNav from '@/components/main-nav'
 import { UserNav } from '@/components/user-nav'
-import { supaclient } from '@/lib/supabase-client'
+// import { supaclient } from '@/lib/supabase-client'
 import { supaserver, verifyAuth } from '@/lib/supabase-server'
-import { Metadata, ResolvingMetadata } from 'next'
+// import { Metadata, ResolvingMetadata } from 'next'
 import { cookies } from 'next/headers'
 import { notFound } from 'next/navigation'
 import Meeting from './components/meeting'
 
-export const dynamic = 'force-dynamic'
+// export const dynamic = 'force-dynamic'
 
-type Props = {
-	params: { streamId: string }
-	searchParams: { [key: string]: string | string[] | undefined }
-}
+// type Props = {
+// 	params: { streamId: string }
+// 	searchParams: { [key: string]: string | string[] | undefined }
+// }
 
-export async function generateMetadata({ params: { streamId }, searchParams }: Props, parent: ResolvingMetadata): Promise<Metadata> {
-	const { data: stream } = await supaclient().from('streams').select().eq('id', streamId).single()
-	return { title: stream?.name || 'Stepworks Live' }
-}
+// export async function generateMetadata({ params: { streamId }, searchParams }: Props, parent: ResolvingMetadata): Promise<Metadata> {
+// 	const { data: stream } = await supaclient().from('streams').select().eq('id', streamId).single()
+// 	return { title: stream?.name || 'Stepworks Live' }
+// }
 
 export default async function StreamPage({ params: { streamId } }: { params: { streamId: string } }) {
 	const user = await verifyAuth()
