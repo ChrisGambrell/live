@@ -9,10 +9,14 @@ import { Dispatch, MutableRefObject, SetStateAction, useEffect, useState } from 
 import { toast } from 'react-hot-toast'
 
 export default function Media({
+	streamId,
 	externalPlayer,
+	externalVideo,
 	setExternalVideo,
 }: {
+	streamId: string
 	externalPlayer: MutableRefObject<HTMLVideoElement>
+	externalVideo: { link: string | null; playing: boolean }
 	setExternalVideo: Dispatch<
 		SetStateAction<{
 			link: null
@@ -52,6 +56,8 @@ export default function Media({
 		getStreamMedias()
 	}, [meetingId])
 
+	console.log(streamMedia)
+
 	async function handleStartVideo(path: string) {
 		const {
 			data: { publicUrl },
@@ -77,10 +83,14 @@ export default function Media({
 						<Button
 							size='xs'
 							variant='secondary'
-							onClick={() => {
-								setSelectedMedia(i)
-								if (selectedMedia === i) handleStopVideo()
-								else handleStartVideo(media.name)
+							onClick={async () => {
+								const {
+									data: { publicUrl: link },
+								} = await supaclient().storage.from('stream_media').getPublicUrl(`/${streamId}/${media.name}`)
+								console.log(link)
+
+								if (externalVideo.link) stopVideo()
+								else startVideo({ link })
 							}}>
 							{selectedMedia === i ? <Pause className='w-4 h-4' /> : <Play className='w-4 h-4' />}
 						</Button>

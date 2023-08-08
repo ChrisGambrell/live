@@ -32,7 +32,7 @@ export function StreamItem({
 		<div className='flex justify-between p-4'>
 			<div className='grid gap-1'>
 				<div className='flex items-center space-x-2'>
-					<Link href={`/streams/${stream.id}`} className='font-semibold hover:underline'>
+					<Link href={`/streams/${stream.id}`} className='font-semibold hover:underline' prefetch={false}>
 						{stream.name}
 					</Link>
 					{stream.presenter && <div className='text-xs italic text-gray-400'>({stream.presenter.name})</div>}
