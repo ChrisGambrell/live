@@ -74,11 +74,8 @@ export default function SpeakerView({ stream, user }: { stream: SupaSelectType<'
 			<div className='flex flex-grow space-x-4'>
 				<div className='flex items-center flex-grow h-full'>
 					{externalVideo.link ? (
-						externalVideo.link?.endsWith('.pptx') ? (
-							<div>
-								{/* <iframe src={externalVideo.link}></iframe> */}
-								{/* <DocViewer documents={[{ uri: externalVideo.link }]} /> */}
-							</div>
+						externalVideo.link?.endsWith('.pdf') ? (
+							<div></div>
 						) : (
 							<video
 								// TODO: Fix error
@@ -111,14 +108,16 @@ export default function SpeakerView({ stream, user }: { stream: SupaSelectType<'
 					{view.includes('participants') && <Participants />}
 					{/* // TODO: Fix error
 							// @ts-ignore */}
-					{/* {view.includes('media') && (
+					{view.includes('media') && (
 						<Media
 							streamId={stream.id}
+							// @ts-ignore
 							externalPlayer={externalPlayer}
 							externalVideo={externalVideo}
+							// @ts-ignore
 							setExternalVideo={setExternalVideo}
 						/>
-					)} */}
+					)}
 					{view.includes('messages') && <Messages />}
 				</div>
 			</div>
