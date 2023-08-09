@@ -1,7 +1,8 @@
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { SupaSelectType, UserProfile } from '@/lib/supabase'
 import { useMeeting } from '@videosdk.live/react-sdk'
 
-export default function Participants() {
+export default function Participants({ stream, user }: { stream: SupaSelectType<'streams'>; user: UserProfile }) {
 	const { participants } = useMeeting()
 
 	return (
@@ -11,16 +12,12 @@ export default function Participants() {
 				<CardDescription>There are {participants.size - 1} people watching the stream</CardDescription>
 			</CardHeader>
 			<CardContent className='overflow-scroll'>
-				{[...participants.values()]
-					.filter((p) => p.mode === 'CONFERENCE')
-					.map((p) => (
-						<p key={p.id}>{p.displayName} (Host)</p>
-					))}
-				{[...participants.values()]
-					.filter((p) => p.mode !== 'CONFERENCE')
-					.map((p) => (
-						<p key={p.id}>{p.displayName}</p>
-					))}
+				{[...participants.values()].map((p) => (
+					<p key={p.id}>
+						{p.displayName}
+						{stream.presenter === user.id && ' (Host)'}
+					</p>
+				))}
 			</CardContent>
 		</Card>
 	)
