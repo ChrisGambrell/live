@@ -105,7 +105,7 @@ export default function SpeakerView({ stream, user }: { stream: SupaSelectType<'
 					)}
 				</div>
 				<div className='flex flex-col h-full pb-6 pr-4 space-y-4'>
-					{view.includes('participants') && <Participants />}
+					{view.includes('participants') && <Participants stream={stream} user={user} />}
 					{/* // TODO: Fix error
 							// @ts-ignore */}
 					{view.includes('media') && (
