@@ -1,3 +1,5 @@
+// BUG: Remove all unused components
+
 import { SupaSelectType, UserProfile } from '@/lib/supabase'
 import { useMeeting } from '@videosdk.live/react-sdk'
 import { useMemo } from 'react'
@@ -17,7 +19,7 @@ export default function ViewerView({ stream, user }: { stream: SupaSelectType<'s
 				))}
 			</div>
 			<div className='flex flex-col h-full pb-6 pr-4 space-y-4'>
-				<Participants />
+				<Participants stream={stream} user={user} />
 				<Messages />
 			</div>
 		</div>
