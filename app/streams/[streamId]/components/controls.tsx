@@ -4,7 +4,11 @@ import { LogOut, Mic, MicOff, ScreenShare, ScreenShareOff, Video, VideoOff } fro
 import ActionIcon from './action-icon'
 
 export default function Controls() {
-	const { leave, localMicOn, localScreenShareOn, localWebcamOn, toggleMic, toggleScreenShare, toggleWebcam } = useMeeting()
+	const { leave, localMicOn, localScreenShareOn, localWebcamOn, toggleMic, toggleScreenShare, toggleWebcam } = useMeeting({
+		onError({ code, message }) {
+			console.log(code, message)
+		},
+	})
 
 	return (
 		<div className='flex justify-center space-x-6'>

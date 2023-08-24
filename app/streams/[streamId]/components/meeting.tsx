@@ -13,8 +13,8 @@ export default function Meeting({ stream, token, user }: { stream: SupaSelectTyp
 		<MeetingProvider
 			config={{
 				meetingId: stream.meeting_id,
-				micEnabled: stream.presenter === user.id,
-				webcamEnabled: stream.presenter === user.id,
+				micEnabled: false,
+				webcamEnabled: false,
 				name: user.name,
 				multiStream: false,
 				maxResolution: 'hd',
