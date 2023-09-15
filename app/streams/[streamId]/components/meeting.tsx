@@ -7,7 +7,7 @@ import Container from './container'
 
 export default function Meeting({ stream, token, user }: { stream: SupaSelectType<'streams'>; token: string; user: UserProfile }) {
 	const router = useRouter()
-	console.log(stream)
+	// console.log(stream)
 
 	return (
 		<MeetingProvider
@@ -16,7 +16,7 @@ export default function Meeting({ stream, token, user }: { stream: SupaSelectTyp
 				micEnabled: false,
 				webcamEnabled: false,
 				name: user.name,
-				multiStream: false,
+				// multiStream: false,
 				maxResolution: 'hd',
 			}}
 			token={token}>
