@@ -16,7 +16,7 @@ export default function Meeting({ stream, token, user }: { stream: SupaSelectTyp
 				micEnabled: false,
 				webcamEnabled: false,
 				name: user.name,
-				// multiStream: false,
+				multiStream: false,
 				maxResolution: 'hd',
 			}}
 			token={token}>
